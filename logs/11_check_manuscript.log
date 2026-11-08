@@ -8,14 +8,14 @@
   refers to something the pipeline did not produce (or no longer produces).
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-[DOC] paper_elsevier.tex
-[CHECK] 19 files followed, 0 figures, 5 project variables used, 0 undefined
+[DOC] paper.tex
+[CHECK] 20 files followed, 0 figures, 3 project variables used, 0 undefined
 
-[DOC] paper_reading.tex
-[CHECK] 19 files followed, 0 figures, 3 project variables used, 0 undefined
+[DOC] paper_elsevier.tex
+[CHECK] 20 files followed, 0 figures, 5 project variables used, 0 undefined
 
 [DOC] paper_springer.tex
-[CHECK] 19 files followed, 0 figures, 3 project variables used, 0 undefined
+[CHECK] 20 files followed, 0 figures, 3 project variables used, 0 undefined
 
 [DOC] supplementary.tex
 [CHECK] 5 files followed, 0 figures, 2 project variables used, 0 undefined

@@ -4,3 +4,12 @@
 
 Replace this paragraph. Every number in the text comes from a macro that a script in scripts/ wrote into latex/;
 the check step fails the build if the text names a macro that nothing produced.
+
+\begin{table}[htbp]
+	\centering
+	\caption{An example of a generated table. The caption is written by hand here, next to the item it describes,
+		while the body comes from latex/ and is overwritten on every run; a caption that states a number states it
+		with a macro, as this one does: \DemoNSamples{} samples.}
+	\label{tab:demo}
+	\projtable{latex/demo_table.tex}
+\end{table}

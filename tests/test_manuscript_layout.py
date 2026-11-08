@@ -168,7 +168,12 @@ class TestTheSharedSourceNamesNoJournal:
 
     def test_a_layout_is_still_allowed_to_name_its_own_journal(self):
         # The counterpart of the rule above: the knowledge has to live somewhere, and that somewhere is the template.
-        named = [d for d in DOCUMENTS if PUBLISHER_NAMES.search(read(os.path.join(ROOT, d)))]
+        # Until a journal is chosen the only document is the reading copy, which names none, so there is nothing to
+        # check; the rule above still applies to sections/ either way.
+        journal_layouts = [d for d in DOCUMENTS if d != "paper.tex"]
+        if not journal_layouts:
+            pytest.skip("no journal layout at the root yet; copy one from templates/documents/")
+        named = [d for d in journal_layouts if PUBLISHER_NAMES.search(read(os.path.join(ROOT, d)))]
         assert named, "no layout names the class or publisher it typesets for"
 
 

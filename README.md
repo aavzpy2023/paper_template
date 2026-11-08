@@ -3,14 +3,14 @@
 One manuscript, several journal layouts, and no number ever typed by hand.
 
 The text lives once in `sections/`. Every figure and every number lives once in `latex/`, written there by a script.
-A root `.tex` per journal says only how that publisher wants the same facts arranged. Switching journal is writing
-one of those files; it is never editing the manuscript.
+`paper.tex` is the document you write and review in. When a journal is chosen, its layout is a second root `.tex`
+that says only how that publisher wants the same facts arranged — never an edit to the manuscript.
 
 ## Starting a new paper
 
 ```bash
 git clone <this repo> my-paper && cd my-paper && rm -rf .git && git init
-bash logs/build.sh        # four PDFs, before a word has been written
+bash logs/build.sh        # paper.pdf, before a word has been written
 ```
 
 Then, in this order:
@@ -67,17 +67,29 @@ editor building on save): it leaves a newer `build/<doc>.pdf`, latexmk then cons
 skips the final pass, and the stale count persists across rebuilds. Delete `build/<doc>.pdf` and build that one
 document alone.
 
+`.vscode/settings.json` sets `latex-workshop.latex.autoBuild.run` to `never` for exactly that reason, and
+`.vscode/tasks.json` makes `logs/build.sh` the default build task (Ctrl+Shift+B). Leave it off: `onFileChange` is
+what produced the corrupt PDF the paragraph above describes.
+
 ## Layouts
 
-| File | Class | What it is for |
-|---|---|---|
-| `paper_reading.tex` | `article` | Reading copy: figures and tables next to the text that cites them. Not for submission. |
-| `paper_elsevier.tex` | `cas-sc` | Elsevier single column. The class ships with TeX Live; nothing is vendored. |
-| `paper_springer.tex` | `sn-jnl` | Springer Nature. Class and `.bst` files vendored in `templates/springer/`. |
-| `supplementary.tex` | `article` | Its own PDF, reading the same `latex/` as the manuscript. Items numbered S1, S2, … |
+`paper.tex` is the only document, and the one you work in: plain `article`, figures and tables next to the text that
+cites them. It is not a submission layout, and it stays whatever journal you end up with — a publisher's class
+deliberately collects the figures at the end, which is right for a submission and useless for reading a draft.
 
-**Adding a journal** is one new root `.tex`. It supplies the class, the bibliography style, and renderers for three
-project macros:
+**When a journal appears**, copy its layout out of `templates/documents/` into the root:
+
+```bash
+cp templates/documents/paper_springer.tex .     # or paper_elsevier.tex, or supplementary.tex
+bash logs/build.sh
+```
+
+`logs/build.sh` and the tests find every `*.tex` in the root that declares a `\documentclass`, so the new document
+is built and checked from the moment it is there; nothing has to be registered. `templates/documents/README.md` says
+what each one is and what to watch for.
+
+**Writing one for a journal that has none yet** is one file. It supplies the class, the bibliography style, and
+renderers for four project macros:
 
 ```latex
 \newcommand{\projtable}[1]{\input{#1}}                        % how a generated table is typeset
@@ -86,14 +98,13 @@ project macros:
 \newcommand{\projauthorcorr}[6]{...}                          % the same, for the corresponding author
 ```
 
-Then `\input` the metadata and the variables, and `\input{sections/manuscript_body.tex}`. Nothing in `sections/` is
-touched, and `logs/build.sh` and the tests pick the new document up on their own.
+Then it `\input`s the metadata and the variables and `\input`s `sections/manuscript_body.tex`. Nothing in
+`sections/` is touched.
 
 The author renderers exist because no two classes agree: one wants `\author[1]{Name}` with `\ead` and `\credit`
 after it and the address as key-value pairs, another wants `\fnm{}`/`\sur{}` split and `\author*` for the
-corresponding author, and the reading copy wants one `\and`-separated line. The facts are stated once; each class
-arranges them its own way. Note that `sn-jnl` expands the running title immediately, so its metadata `\input` has
-to sit in the preamble, before `\begin{document}`.
+corresponding author, and `paper.tex` wants one `\and`-separated line. The facts are stated once; each class
+arranges them its own way.
 
 ## Tests
 
@@ -117,16 +128,18 @@ Add the project's own tests under `tests/`; `tests/qsartools/` mirrors `scripts/
 ## Layout of the repository
 
 ```
-sections/     the manuscript, by hand. No journal is named here.
-latex/        macros and tables, written by scripts. Never edited.
-figures/      figures, written by scripts.
-scripts/      one numbered script per step; qsartools/ holds the reusable pieces.
-data/         inputs, never written by a script.
-results/      CSVs a later step reads.
-logs/         one log per step, and build.sh.
-templates/    vendored journal classes.
-build/        auxiliary files; not versioned.
-*.tex         one root document per layout.
+paper.tex               the document you write and review in.
+sections/               the manuscript, by hand. No journal is named here.
+latex/                  macros and tables, written by scripts. Never edited.
+figures/                figures, written by scripts.
+scripts/                one numbered script per step; qsartools/ holds the reusable pieces.
+data/                   inputs, never written by a script.
+results/                CSVs a later step reads.
+logs/                   one log per step, and build.sh.
+templates/documents/    root documents to copy into the root when a journal is chosen.
+templates/springer/     the vendored sn-jnl class and its bibliography styles.
+.vscode/                autoBuild off, and a build task. See the warning under Building.
+build/                  auxiliary files; not versioned.
 ```
 
 `scripts/paths_config.py` decides every path; no script hardcodes one. Set `PAPER_OUT_DIR` to send a second run's
