@@ -1,0 +1,4 @@
+% Every macro file the pipeline writes, read once so that no document can be missing one. A new step that emits
+% numbers adds its file here and nowhere else; tests/test_manuscript_layout.py fails if latex/ holds a
+% *_variables.tex that this list does not name.
+\input{latex/demo_variables.tex}

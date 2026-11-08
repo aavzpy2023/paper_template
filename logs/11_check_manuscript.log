@@ -1,0 +1,22 @@
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[EXPLAIN] What this step does
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Final consistency check of the paper against the pipeline outputs. It lists every figure and
+  every included file the         manuscript refers to and confirms they exist, and it confirms
+  that each result variable used in the text was generated.         A failure here means the text
+  refers to something the pipeline did not produce (or no longer produces).
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[DOC] paper_elsevier.tex
+[CHECK] 19 files followed, 0 figures, 5 project variables used, 0 undefined
+
+[DOC] paper_reading.tex
+[CHECK] 19 files followed, 0 figures, 3 project variables used, 0 undefined
+
+[DOC] paper_springer.tex
+[CHECK] 19 files followed, 0 figures, 3 project variables used, 0 undefined
+
+[DOC] supplementary.tex
+[CHECK] 5 files followed, 0 figures, 2 project variables used, 0 undefined
+[OK] Every figure, included file, and variable used by the 4 document(s) is produced by the pipeline.

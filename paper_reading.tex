@@ -1,0 +1,82 @@
+% Reading copy of the manuscript. Same content as every other template: it reads sections/ and latex/ and adds
+% nothing of its own. Its only purpose is that figures and tables sit next to the text that cites them, which a
+% submission class deliberately prevents (cas-sc, for one, empties the float specifier of figures so they collect
+% at the end, which is what a submission wants and a reader does not).
+%
+% This file is not for submission. Journal templates stay as they are; this one exists to be read.
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage[authoryear]{natbib}
+\usepackage{caption}
+
+% Let a float sit near its citation: the default limits reserve a fifth of every page for text, which on a
+% figure-dense manuscript pushes floats forward until they pile up at the end.
+\setcounter{topnumber}{3}
+\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.8}
+
+\captionsetup{font=small, labelfont=bf}
+\setlength{\parskip}{0.3em}
+
+\input{sections/manuscript_metadata.tex}
+
+% The front matter, from sections/manuscript_metadata.tex. The reading copy prints the names on one line, so
+% its renderer emits only those and separates them with \and from the second author on; the e-mail, the ORCID
+% and the CRediT roles belong to the submission layouts and to the contributions declaration.
+\newcommand{\projsep}{}
+\newcommand{\projauthor}[6]{\projsep #2 #3\renewcommand{\projsep}{\and}}
+\newcommand{\projauthorcorr}[6]{\projauthor{#1}{#2}{#3}{#4}{#5}{#6}}
+
+\title{\textbf{\projtitle}}
+\author{\projauthorlist}
+\date{\projaffildiv,\\
+	\projaffilorg, \projaffilcity, \projaffilcountry\\[0.6em]
+	\textit{Reading copy, figures in place. Not the submission layout.}\\
+	\today}
+
+% A generated table, typeset at the full text width. Every table in latex/ is a tabularx or a tabular* that
+% already fills \textwidth, so no template has to box or scale one; this hook stays so that a journal needing
+% something of its own can redefine it in one place.
+\newcommand{\projtable}[1]{\input{#1}}
+
+% One declaration: the statement is shared, the heading belongs to the layout. The declarations are
+% listed in sections/manuscript_declarations.tex and this is the only place a layout decides how they
+% are presented.
+\newcommand{\projdeclaration}[2]{\section*{#1}\input{#2}}
+
+\input{sections/manuscript_variables.tex}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\input{sections/00abstract.tex}
+
+\medskip\noindent\textbf{Keywords:} \input{sections/00keywords.tex}
+\end{abstract}
+
+\input{sections/manuscript_body.tex}
+
+\input{sections/manuscript_declarations.tex}
+
+\bibliographystyle{plainnat}
+\bibliography{references.bib}
+
+\end{document}

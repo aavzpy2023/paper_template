@@ -1,0 +1,41 @@
+% The front matter as data: title, authors, their e-mail, ORCID and contributions, and the one affiliation.
+% No journal's syntax appears here, because every class asks for the same facts in a different shape: one wants
+% a single name per author with the address as key=value pairs, another wants the given and family names split
+% into separate commands and the address broken into fields of its own, and the reading copy wants one
+% \and-separated line. So this file states each fact once and a template renders it, exactly as the abstract and
+% the keywords already work. Supporting one more journal means writing the renderers below in the new
+% template, and changing nothing here.
+%
+% A template must define, before it uses \projauthorlist:
+%   \projauthor{initials}{given}{family}{email}{orcid}{CRediT roles}      one non-corresponding author
+%   \projauthorcorr{...}                                                 same six, for the corresponding author
+% ORCID may be empty, so a renderer that prints it guards the field with \projifhasorcid.
+%
+% THIS IS THE FIRST FILE TO EDIT IN A NEW PAPER. Nothing else holds any of these facts.
+
+\newcommand{\projtitle}{The Title of the Paper, Stated in Full and Without a Subtitle Unless One Earns Its Place}
+\newcommand{\projshorttitle}{Short Running Title}
+\newcommand{\projrunningauthors}{Family-Name et al., 2026}
+
+\newcommand{\projaffildiv}{Department or Institute}
+\newcommand{\projaffilorg}{University}
+\newcommand{\projaffilstreet}{Street and Number}
+\newcommand{\projaffilcity}{City}
+\newcommand{\projaffilstate}{Region}
+\newcommand{\projaffilpostcode}{00000}
+\newcommand{\projaffilcountry}{Country}
+
+% Not every author has an ORCID on file, and a renderer that prints the field unconditionally would emit an empty
+% link for the ones who do not. This runs its second argument only when the first is a non-empty ORCID.
+\newcommand{\projifhasorcid}[2]{\def\projorcidarg{#1}\ifx\projorcidarg\empty\else#2\fi}
+
+% The authors in the order they appear on the paper. The corresponding author is marked by which macro the line
+% calls, not by a flag, so no layout has to decide what "corresponding" looks like in its own notation.
+% The roles are the CRediT taxonomy's own terms: they go into the author block of a class that has one, and into
+% the contributions declaration, which is rendered from this same list.
+\newcommand{\projauthorlist}{%
+	\projauthorcorr{A.B.}{Ada}{Firstauthor}{ada.firstauthor@example.org}{0000-0000-0000-0000}%
+		{Conceptualization, Methodology, Software, Formal analysis, Writing -- original draft}%
+	\projauthor{C.D.}{Carl}{Secondauthor}{carl.secondauthor@example.org}{}%
+		{Validation, Writing -- review \& editing, Supervision}%
+}

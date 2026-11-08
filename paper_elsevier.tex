@@ -1,0 +1,91 @@
+% Elsevier cas-sc layout. Like every other template in this project it adds no content: the sections live in
+% sections/, the numbers in latex/, and this file only supplies the class, the author block and the bibliography
+% style. Switching journal means writing one of these and nothing else.
+%
+% The class ships with TeX Live as els-cas-templates; nothing is vendored here. Use the cas-dc class instead for
+% a double-column journal, and add the longmktitle option when the front matter runs over a page.
+\documentclass[a4paper,fleqn]{cas-sc}
+
+\usepackage[authoryear]{natbib}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+% Avoid spaces after figures
+\setlength{\floatsep}{12pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{12pt plus 2pt minus 2pt}
+
+% A generated table, typeset at the full text width. Every table in latex/ is a tabularx or a tabular* that
+% already fills \textwidth, so no template has to box or scale one; this hook stays so that a journal needing
+% something of its own can redefine it in one place.
+\newcommand{\projtable}[1]{\input{#1}}
+
+% One declaration: the statement is shared, the heading belongs to the layout. The declarations are
+% listed in sections/manuscript_declarations.tex and this is the only place a layout decides how they
+% are presented.
+\newcommand{\projdeclaration}[2]{\section*{#1}\input{#2}}
+
+\input{sections/manuscript_metadata.tex}
+\input{sections/manuscript_variables.tex}
+
+% The class writes the page total in an \AtEndDocument hook that runs before the pending pages are shipped out, so
+% the footer showed a stale total ("Page 21 of 19"). Flush first and write it again; the later aux entry wins.
+\makeatletter
+\AtEndDocument{\clearpage\immediate\write\@auxout{\string\csxdef{lastpage}{\the\numexpr\value{page}-1\relax}}}
+\makeatother
+
+\begin{document}
+	\let\WriteBookmarks\relax
+	\def\floatpagepagefraction{1}
+	\def\textpagefraction{.001}
+
+	% The front matter, from sections/manuscript_metadata.tex. cas-sc wants the title, the running heads, then one
+	% \author per author with its e-mail, URL and CRediT roles following it, and the address in key=value form.
+	% This block is the only place that knows that; the facts themselves are in the metadata file.
+	\shorttitle{\projshorttitle}
+	\shortauthors{\projrunningauthors}
+	\title [mode = title]{\projtitle}
+
+	\newcommand{\projauthorbody}[6]{%
+		\ead{#4}\projifhasorcid{#5}{\ead[url]{https://orcid.org/#5}}\credit{#6}}
+	\newcommand{\projauthor}[6]{\author[1]{#2 #3}\projauthorbody{#1}{#2}{#3}{#4}{#5}{#6}}
+	\newcommand{\projauthorcorr}[6]{\author[1]{#2 #3}\cormark[1]\projauthorbody{#1}{#2}{#3}{#4}{#5}{#6}}
+	\projauthorlist
+	\cortext[1]{Corresponding author}
+
+	\affiliation[1]{organization={\projaffildiv, \projaffilorg},
+		addressline={\projaffilstreet},
+		city={\projaffilcity},
+		postcode={\projaffilpostcode},
+		state={\projaffilstate},
+		country={\projaffilcountry}}
+
+	\maketitle
+
+	\begin{abstract}
+		\input{sections/00abstract.tex}
+	\end{abstract}
+	\begin{keywords}
+		\input{sections/00keywords.tex}
+	\end{keywords}
+
+	\input{sections/manuscript_body.tex}
+
+	\input{sections/manuscript_declarations.tex}
+
+	% \printcredits is left out on purpose: the contributions are declared once, in
+	% sections/06_4_Authors_Contributions.tex, so that every layout reports the same thing. The
+	% \credit entries above stay for the journal's own metadata.
+
+	\bibliographystyle{cas-model2-names}
+	\bibliography{references.bib}
+
+\end{document}
