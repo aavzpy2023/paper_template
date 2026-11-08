@@ -11,7 +11,6 @@
 # With no argument the documents are discovered the same way scripts/11_check_manuscript.py discovers them: every
 # *.tex in the root that declares a \documentclass. A new layout is therefore built as soon as it exists.
 cd "$(dirname "$0")" || exit 1
-mkdir -p build
 # The search paths for the vendored class and its styles are set in .latexmkrc, so the editor finds them too.
 
 if [ "$#" -gt 0 ]; then
@@ -23,6 +22,9 @@ fi
 
 STATUS=0
 for doc in $DOCS; do
+  # Inside the loop, not once before it: another process (an editor's build, a parallel run of this script) can
+  # remove build/ between the start and this document's turn, and the redirection below would then fail.
+  mkdir -p build
   if ! latexmk -pdf -interaction=nonstopmode "$doc.tex" > "build/${doc}_build.log" 2>&1; then
     printf "  %-22s LATEXMK FAILED, see build/%s_build.log\n" "$doc" "$doc"
     tail -5 "build/${doc}_build.log" | sed 's/^/      /'
