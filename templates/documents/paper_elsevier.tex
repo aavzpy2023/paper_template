@@ -68,14 +68,25 @@
 		state={\projaffilstate},
 		country={\projaffilcountry}}
 
-	\maketitle
+	% The abstract and the keywords, both before \maketitle, because that is where this class consumes them: the
+	% keywords go into a box that the abstract block measures and places beside itself, and the abstract is read
+	% back from \jobname.abs.
+	%
+	% The abstract is deliberately not wrapped in the class's own abstract environment. That environment captures
+	% its body VERBATIM into \jobname.abs, so an \input inside it is written out as characters instead of being
+	% expanded, and the abstract comes out of the PDF as the literal path "sections/00abstract.tex". Writing that
+	% file ourselves, with one line the class expands when it reads it back, is what keeps the abstract in
+	% sections/ where every other layout takes it from.
+	\newwrite\projabsout
+	\immediate\openout\projabsout=\jobname.abs
+	\immediate\write\projabsout{\string\input{sections/00abstract.tex}}
+	\immediate\closeout\projabsout
 
-	\begin{abstract}
-		\input{sections/00abstract.tex}
-	\end{abstract}
 	\begin{keywords}
 		\input{sections/00keywords.tex}
 	\end{keywords}
+
+	\maketitle
 
 	\input{sections/manuscript_body.tex}
 
