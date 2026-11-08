@@ -1,6 +1,6 @@
 # Ready-made root documents
 
-Copy one of these into the project root when you need it, then `bash logs/build.sh`. It is discovered from there:
+Copy one of these into the project root when you need it, then `bash ./build.sh`. It is discovered from there:
 the build script and the tests find every `*.tex` in the root that declares a `\documentclass`, so nothing has to be
 registered anywhere.
 

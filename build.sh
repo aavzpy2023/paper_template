@@ -2,15 +2,15 @@
 # Build one of the manuscript layouts, or all of them. They share sections/ and latex/ and differ only in the class,
 # the author block and the bibliography style, so adding a journal means adding one root .tex and nothing else.
 #
-#   logs/build.sh                 every document
-#   logs/build.sh paper_reading   just that one
+#   ./build.sh                    every document
+#   ./build.sh paper              just that one
 #
 # Everything is driven through latexmk so that .latexmkrc applies: the auxiliary files stay in build/ and only the
 # PDF is copied back to the root, where it is versioned. Calling pdflatex directly bypasses that and litters the root.
 #
 # With no argument the documents are discovered the same way scripts/11_check_manuscript.py discovers them: every
 # *.tex in the root that declares a \documentclass. A new layout is therefore built as soon as it exists.
-cd "$(dirname "$0")/.." || exit 1
+cd "$(dirname "$0")" || exit 1
 mkdir -p build
 # The search paths for the vendored class and its styles are set in .latexmkrc, so the editor finds them too.
 

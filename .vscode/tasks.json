@@ -6,7 +6,7 @@
             // files in build/, and reports the error and unresolved-reference counts per document.
             "label": "build the manuscript",
             "type": "shell",
-            "command": "bash logs/build.sh",
+            "command": "bash ./build.sh",
             "group": { "kind": "build", "isDefault": true },
             "problemMatcher": []
         },
